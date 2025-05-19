@@ -5,6 +5,7 @@ const sql = require('mssql');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
 app.use(express.json());
 
 // Configuración SQL Server
@@ -57,3 +58,19 @@ app.post('/ine', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+
+
+app.get('/ine', async (req, res) => {
+  try {
+    await sql.connect(config);
+
+    const result = await sql.query`SELECT * FROM ine_datos`;
+
+    res.json(result.recordset);  // devuelve un array con todos los registros
+  } catch (error) {
+    console.error('Error al consultar todos los datos:', error);
+    res.status(500).send('Error al consultar los datos');
+  }
+});
+
