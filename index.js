@@ -61,7 +61,7 @@ app.listen(PORT, () => {
 
 
 
-app.get('/ine', async (req, res) => {
+app.get('/ines', async (req, res) => {
   try {
     await sql.connect(config);
 
