@@ -61,7 +61,7 @@ app.post('/credencial', async (req, res) => {
       VALUES (${personaId}, ${clave_elector}, ${fecha_nacimiento}, ${sexo}, ${seccion}, ${anio_emision}, ${vigencia})
     `;
 
-    res.send('Datos guardados correctamente en las 3 tablas');
+    res.json({ personaId });
   } catch (error) {
     console.error('Error al guardar:', error);
     res.status(500).send('Error al guardar los datos');
