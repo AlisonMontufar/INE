@@ -137,11 +137,38 @@ app.get('/credencial/curp/:curp', async (req, res) => {
     }
 
     res.json(result.recordset[0]);
+    
   } catch (error) {
     console.error('Error al consultar por CURP:', error);
     res.status(500).send('Error en la consulta');
   }
 });
+
+// 🔍 CONSULTAR POR CURP Y DEVOLVER SOLO ID
+app.get('/credencial/curpID/:curp', async (req, res) => {
+  const { curp } = req.params;
+  try {
+    await sql.connect(config);
+
+    const result = await sql.query`
+      SELECT p.id
+      FROM persona p
+      WHERE p.curp = ${curp}
+    `;
+
+    if (result.recordset.length === 0) {
+      return res.status(404).json({ message: 'Persona no encontrada con ese CURP' });
+    }
+
+    const personaId = result.recordset[0].id;
+    res.json({ personaId });
+
+  } catch (error) {
+    console.error('Error al consultar por CURP:', error);
+    res.status(500).json({ message: 'Error en la consulta' });
+  }
+});
+
 
 // ❌ ELIMINAR POR CURP
 app.delete('/credencial/curp/:curp', async (req, res) => {
